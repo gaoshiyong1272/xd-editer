@@ -5,28 +5,12 @@
 </template>
 <script>
   import E from "wangeditor";
-  import {genUpToken} from '@/utils/qiniu';
 
-  //http://www.wangeditor.com/index.html
   export default {
-    name: "XdQiniuEditor",
+    name: "XdEditor",
     props:{
       value: String,
       catchData: {},
-
-      size: {
-        type: Number,
-        default() {
-          return 2;
-        }
-      },
-
-      uploadType: {
-        type: Array,
-        default() {
-          return [];
-        }
-      },
 
       zIndex: {
         type: Number,
@@ -34,7 +18,18 @@
           return 200;
         }
       },
-
+      size: {
+        type: Number,
+        default() {
+          return 2;
+        }
+      },
+      uploadType: {
+        type: Array,
+        default() {
+          return [];
+        }
+      },
       height: {
         type: Number,
         default() {
@@ -42,8 +37,21 @@
         }
       },
 
+      /***
+       * @description 上传参数
+       */
       params: {
-        type: Object|Array,
+        type: Object | Array,
+        default() {
+          return {}
+        }
+      },
+
+      /***
+       * @description 上传设置headers
+       */
+      headers: {
+        type: Object,
         default(){
           return {}
         }
@@ -54,11 +62,6 @@
         default: 'file',
       },
 
-      qiniuOptinsIndex: {
-        type: Number,
-        default: 0,
-      },
-
       /**
        * @description 启动文件上传工功能 默认不启动
        */
@@ -66,16 +69,8 @@
         type: String,
         default: '',
       },
-
-      /**
-       * @description 七牛配置选项
-       */
-      qiniuOptions : {
-        type: Object,
-        default(){
-          return {};
-        }
-
+      insertImgFn: {
+        type: Function,
       }
     },
     data() {
@@ -83,7 +78,6 @@
         editor: null, //编辑器对象
         editorContent: '', //编辑器内容
         init: false, //初始化列表
-        __qiniuOptions: null,
       };
     },
 
@@ -97,49 +91,27 @@
     },
 
     mounted() {
-
-      //从vue原型链中获取七牛配置
-      if (this.$xdOptions && this.$xdHelper.checkVarType(this.$xdOptions['qiniu']) === 'object') {
-        this.__qiniuOptions = this.$xdOptions['qiniu'];
-      }
-
-      //从vue原型链中获取七牛配置
-      if (this.$xdOptions && this.$xdHelper.checkVarType(this.$xdOptions['qiniu']) === 'array') {
-        this.__qiniuOptions = this.$xdOptions['qiniu'][this.qiniuOptinsIndex];
-      }
-
-
-      //用户使用插件的时候传入七牛配置
-      if (this.$xdHelper.isEmpty(this.qiniuOptions) && !this.__qiniuOptions) {
-        this.errorFlag = false;
-        this.errorMsg = `
-初始化上传组件失败,用七牛云存储需要提供启用配置:
-<pre>
-const setting = {
-  accoutKey: 'bP3Ca5dtSJBNaWwMkihfhuE30CbAZnYrNzQm6eMN', //七牛AK
-  serviceKey: 'pPNgWwRL3_Jlj7cPtpYbkhXn01EOZTtUhOs3NqZM', //七牛SK
-  webSiteName: 'e56buystatic', //七牛桶名称
-  staticUrl: 'http://static.e56buy.com' //静态域名访问地址
-}
-</pre>
-        `;
-        throw new Error(`
-        使用七牛云存储需要提供启用配置 const setting = {
-          accoutKey: 'bP3Ca5dtSJBNaWwMkihfhuE30CbAZnYrNzQm6eMN', //七牛AK
-          serviceKey: 'pPNgWwRL3_Jlj7cPtpYbkhXn01EOZTtUhOs3NqZM', //七牛SK
-          webSiteName: 'e56buystatic', //七牛桶名称
-          staticUrl: 'http://static.e56buy.com' //静态域名访问地址
-        }
-        `)
-      }
-
-      //插件调用时候传入七牛配置，使用启用配置
-      if (!this.$xdHelper.isEmpty(this.qiniuOptions)) {
-        this.__qiniuOptions = this.$xdHelper.cloneDeep(this.qiniuOptions);
-      }
-
-
       this.editor = new E(this.$refs['editorElem']);
+      this.editor.config.customAlert = function (s, t) {
+        switch (t) {
+          case 'success':
+            alert(s);
+            break
+          case 'info':
+            alert(s);
+            break
+          case 'warning':
+            alert(s);
+            break
+          case 'error':
+            alert(s);
+            break
+          default:
+            alert(s);
+            break
+        }
+      };
+
       // 编辑器的事件，每次改变会获取其html内容
       this.editor.config.onchange = html => {
         this.editorContent = html;
@@ -168,41 +140,20 @@ const setting = {
         'undo', // 撤销
         'redo' // 重复
       ];
-      this.editor.config.customAlert = function (s, t) {
-        switch (t) {
-          case 'success':
-            alert(s);
-            break
-          case 'info':
-            alert(s);
-            break
-          case 'warning':
-            alert(s);
-            break
-          case 'error':
-            alert(s);
-            break
-          default:
-            alert(s);
-            break
-        }
-      };
-
       //====== custom uploadfile ====
 
       if(this.action) {
         this.editor.config.uploadImgServer = this.action;
         this.editor.config.uploadFileName = this.name;
         this.editor.config.uploadImgMaxSize = this.size * 1024 * 1024;
-
         //启动限制文件类型上传
-        if(this.uploadType.length > 0) {
+        if (this.uploadType.length > 0) {
           this.editor.config.uploadImgAccept = this.uploadType;
         }
-
-        this.editor.config.uploadImgParams = Object.assign({}, this.params, {token: genUpToken(this.__qiniuOptions)});
+        this.editor.config.uploadImgParams = Object.assign({}, this.params);
+        this.editor.config.uploadImgHeaders = Object.assign({}, this.headers);
         this.editor.config.uploadImgHooks = {
-
+          // 上传图片之前
           before: function (xhr) {
             console.log(xhr)
 
@@ -212,7 +163,6 @@ const setting = {
             //   msg: '需要提示给用户的错误信息'
             // }
           },
-
           // 图片上传并返回了结果，图片插入已成功
           success:(xhr) => {
             console.log('success', xhr)
@@ -231,7 +181,12 @@ const setting = {
           },
           // 图片上传并返回了结果，想要自己把图片插入到编辑器中
           customInsert: (insertImgFn, result) => {
-            insertImgFn(`${this.__qiniuOptions.staticUrl}/${result.key}`);
+            if(typeof this.insertImgFn === 'function') {
+              this.insertImgFn(insertImgFn, result);
+            }else{
+              insertImgFn(result.url);
+            }
+
           }
         }
       }

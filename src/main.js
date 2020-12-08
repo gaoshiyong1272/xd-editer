@@ -12,12 +12,12 @@ Vue.prototype.$xdStorage = storage;
 Vue.prototype.$xdRegExps = regExps;
 Vue.config.productionTip = false;
 Vue.prototype.$xdOptions = {
-  qiniu: [{
-    accoutKey: 'bP3Ca5dtSJBNaWwMkihfhuE30CbAZnYrNzQm6eMN', //七牛AK（e56buy ）
-    serviceKey: 'pPNgWwRL3_Jlj7cPtpYbkhXn01EOZTtUhOs3NqZM', //七牛SK（e56buy ）
-    webSiteName: 'e56buystatic', //七牛桶名称（e56buy ）
-    staticUrl: 'http://static.e56buy.com' //静态域名访问地址（e56buy ）
-  }]
+  // qiniu: [{
+  //   accoutKey: 'bP3Ca5dtSJBNaWwMkihfhuE30CbAZnYrNzQm6eMN', //七牛AK（e56buy ）
+  //   serviceKey: 'pPNgWwRL3_Jlj7cPtpYbkhXn01EOZTtUhOs3NqZM', //七牛SK（e56buy ）
+  //   webSiteName: 'e56buystatic', //七牛桶名称（e56buy ）
+  //   staticUrl: 'http://static.e56buy.com' //静态域名访问地址（e56buy ）
+  // }]
 };
 
 // 遍历并注册全局组件

@@ -9,6 +9,7 @@ node_modules
 /src/view
 /src/App.vue
 /src/main.js
+/src/install.js
 
 /build
 /public

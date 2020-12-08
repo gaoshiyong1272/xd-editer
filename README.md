@@ -48,7 +48,7 @@ Vue.use(editer,{});
 
 ```
 
-##### vue文件中使用
+##### 七牛图片上传，富文本编辑器
 
 ```bash
 <template>
@@ -67,13 +67,50 @@ export default {
   components: {},
   data(){
     return {
-      qiniuContent: '<p>测试数据</p>'
+      qiniuContent: '<p>测试数据</p>',
       qiniuOptions: {
         accoutKey: 'bP3Ca5dtSJBNaWwMkihfhuE30CbA11ZnYrNzQm6eMN', //七牛AK
         serviceKey: 'pPNgWwRL3_Jlj7cPtpYbkhXn01EOZ22TtUhOs3NqZM', //七牛SK
         webSiteName: 'e56buystatic', //七牛桶名称
         staticUrl: 'http://static.e56buy.com' //静态域名访问地址
       }
+    }
+  }
+}
+</script>
+
+```
+
+
+##### 自定义上传，富文本编辑器
+
+```bash
+<template>
+    <xd-editor
+      style="width: 70%"
+      action="https://sandbox-c.jufubao.cn/api/admin/common/upload"
+      :params="params"
+      :headers="{}"
+      :height="150"
+      :z-index="10000"
+      :upload-type="['jpeg','jpg','png', 'gif', 'bmp']"
+      :size="0.1"
+      :insert-img-fn="insertImage"
+      v-model="customContent"
+    ></xd-editor>
+</template>
+
+<script>
+export default {
+  name: 'app',
+  components: {},
+  data(){
+    return {
+        customContent:'<p>自定义图片上传测试数据</p>',
+        params :{
+          params2:'params1',
+          params2:'params2'
+        }
     }
   }
 }
