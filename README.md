@@ -1,7 +1,7 @@
-# xd-helper
+# Gxd-editer
 
 #### 介绍
-在线编辑器支持七牛上传，参考地址：http://www.wangeditor.com/index.html
+在线富文本编辑器，支持七牛图片上传，参考地址：http://www.wangeditor.com/index.html
 
 #### 安装教程
 npm install --save gxd-editer --registry=https://registry.npm.taobao.org
