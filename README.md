@@ -27,12 +27,12 @@ npm run dev
 
 ##### 引入方式
 
-```bash
-# 全局引入方式
+```javascript
+// 全局引入方式
 
 import editer from 'gxd-editer';
 
-# 七牛配置项
+// 七牛配置项
 Vue.use(editer,{
   qiniu: [{
     accoutKey: 'bP3Ca5dtSJBNaWwMkihfhuE11130CbAZnYrNzQm6eMN', //七牛AK
@@ -42,7 +42,7 @@ Vue.use(editer,{
   }]
 });
 
-# 或者在调插件的时候传入七牛相关配置
+// 或者在调插件的时候传入七牛相关配置
 import editer from 'gxd-editer';
 Vue.use(editer,{});
 
@@ -50,7 +50,7 @@ Vue.use(editer,{});
 
 ##### 七牛图片上传，富文本编辑器
 
-```bash
+```vue
 <template>
     <xd-qiniu-editor
       action="https://up-z1.qiniup.com"
@@ -84,7 +84,7 @@ export default {
 
 ##### 自定义上传，富文本编辑器
 
-```bash
+```vue
 <template>
     <xd-editor
       style="width: 70%"
@@ -117,6 +117,14 @@ export default {
 </script>
 
 ```
+##### 新开发功能
+```text
+1、定义提示弹窗
+
+```
+
+
+
 
 
 
