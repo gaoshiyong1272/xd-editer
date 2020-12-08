@@ -1,7 +1,7 @@
 'use strict';
 
-import HelloWorld from './HelloWorld';
+import XdQiniuEditor from './XdQiniuEditor';
 
 export default [
-  HelloWorld
+  XdQiniuEditor
 ]
