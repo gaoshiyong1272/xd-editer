@@ -14,9 +14,6 @@ const install = function (Vue, options) {
   if (install.installed) return;
   install.installed = true;
 
-  Vue.use(Element, {
-    size: 'medium', // set element-ui default size
-  });
 
   Vue.prototype.$xdHelper = helperObj;
   Vue.prototype.$xdCookie = cookie;
