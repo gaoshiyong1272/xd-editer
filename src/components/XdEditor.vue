@@ -5,6 +5,7 @@
 </template>
 <script>
   import E from "wangeditor";
+  import loading from "@/Loading/loading";
 
   export default {
     name: "XdEditor",
@@ -155,6 +156,7 @@
         this.editor.config.uploadImgHooks = {
           // 上传图片之前
           before: function (xhr) {
+            loading(true);
             console.log(xhr)
 
             // 可阻止图片上传
@@ -186,7 +188,7 @@
             }else{
               insertImgFn(result.url);
             }
-
+            loading(false);
           }
         }
       }

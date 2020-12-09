@@ -6,6 +6,7 @@
 <script>
   import E from "wangeditor";
   import {genUpToken} from '@/utils/qiniu';
+  import loading from "@/Loading/loading";
 
   //http://www.wangeditor.com/index.html
   export default {
@@ -99,18 +100,18 @@
     mounted() {
 
       //从vue原型链中获取七牛配置
-      if (this.$xdOptions && this.$xdHelper.checkVarType(this.$xdOptions['qiniu']) === 'object') {
+      if (this.$xdOptions && this.checkVarType(this.$xdOptions['qiniu']) === 'object') {
         this.__qiniuOptions = this.$xdOptions['qiniu'];
       }
 
       //从vue原型链中获取七牛配置
-      if (this.$xdOptions && this.$xdHelper.checkVarType(this.$xdOptions['qiniu']) === 'array') {
+      if (this.$xdOptions && this.checkVarType(this.$xdOptions['qiniu']) === 'array') {
         this.__qiniuOptions = this.$xdOptions['qiniu'][this.qiniuOptinsIndex];
       }
 
 
       //用户使用插件的时候传入七牛配置
-      if (this.$xdHelper.isEmpty(this.qiniuOptions) && !this.__qiniuOptions) {
+      if (this.isEmpty(this.qiniuOptions) && !this.__qiniuOptions) {
         this.errorFlag = false;
         this.errorMsg = `
 初始化上传组件失败,用七牛云存储需要提供启用配置:
@@ -134,8 +135,8 @@ const setting = {
       }
 
       //插件调用时候传入七牛配置，使用启用配置
-      if (!this.$xdHelper.isEmpty(this.qiniuOptions)) {
-        this.__qiniuOptions = this.$xdHelper.cloneDeep(this.qiniuOptions);
+      if (!this.isEmpty(this.qiniuOptions)) {
+        this.__qiniuOptions = this.cloneDeep(this.qiniuOptions);
       }
 
 
@@ -204,8 +205,8 @@ const setting = {
         this.editor.config.uploadImgHooks = {
 
           before: function (xhr) {
-            console.log(xhr)
-
+            console.log(xhr);
+            loading(true)
             // 可阻止图片上传
             // return {
             //   prevent: true,
@@ -232,6 +233,7 @@ const setting = {
           // 图片上传并返回了结果，想要自己把图片插入到编辑器中
           customInsert: (insertImgFn, result) => {
             insertImgFn(`${this.__qiniuOptions.staticUrl}/${result.key}`);
+            loading(false)
           }
         }
       }
@@ -240,7 +242,61 @@ const setting = {
 
       //设置编辑器类容
       this.editor.txt.html(this.value);
-    }
+    },
+
+    methods:{
+      /**
+       * @description 简单深拷贝
+       * @param json
+       * @returns {any}
+       */
+      cloneDeep(json) {
+        if (this.checkVarType(json) === 'object'
+          || this.checkVarType(json) === 'array'
+        ) {
+          return JSON.parse(JSON.stringify(json));
+        }
+        return json;
+      },
+
+      checkVarType(obj) {
+        let toString = Object.prototype.toString;
+        let map = {
+          '[object Boolean]': 'boolean',
+          '[object Number]': 'number',
+          '[object String]': 'string',
+          '[object Function]': 'function',
+          '[object Array]': 'array',
+          '[object Date]': 'date',
+          '[object RegExp]': 'regExp',
+          '[object Undefined]': 'undefined',
+          '[object Null]': 'null',
+          '[object Object]': 'object'
+        };
+        return map[toString.call(obj)];
+      },
+
+      /**
+       * @description 检查对象或者数组是否为空
+       * @param obj
+       * @return boolean
+       */
+      isEmpty(obj) {
+        if (this.checkVarType(obj) === 'array' ||
+          this.checkVarType(obj) === 'object'
+        ) {
+          let str = JSON.stringify(obj);
+          if (str === '{}' || str === '[]') {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          console.log('isEmpty.error', obj);
+          throw new Error('只支持数组与JSON对象格式');
+        }
+      }
+    },
   }
 </script>
 <style scoped>
@@ -255,4 +311,5 @@ const setting = {
     font-size: 30px;
     margin: 20px;
   }
+
 </style>

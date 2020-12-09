@@ -3,7 +3,6 @@
 // 自动以数组加载并结构保存组件，便于遍历
 import components from './components/autoload';
 
-
 import gxdHelper from 'gxd-helper';
 let {helper, cookie, storage, regExps} = gxdHelper;
 let helperObj = helper({});
@@ -23,9 +22,9 @@ const install = function (Vue, options) {
   console.log('Vue.use()=> options', options);
 
   // 遍历并注册全局组件
-  components.map(component => {
-    Vue['component'](component.name, component)
-  })
+  Object.keys(components).map(key => {
+    Vue.component(components[key].name, components[key])
+  });
 };
 
 if (typeof window !== 'undefined' && window['Vue']) {

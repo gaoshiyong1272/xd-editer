@@ -1,7 +1,7 @@
 {
   "name": "gxds-editer",
   "description": "简单的在线富文本编辑器，支持七牛图片上传",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "private": false,
   "keywords": [
     "vue-editer",

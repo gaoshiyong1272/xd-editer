@@ -3,7 +3,7 @@
 import XdEditor from './XdEditor';
 import XdQiniuEditor from './XdQiniuEditor';
 
-export default [
+export default {
   XdEditor,
   XdQiniuEditor
-]
+}

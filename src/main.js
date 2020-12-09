@@ -11,6 +11,7 @@ Vue.prototype.$xdCookie = cookie;
 Vue.prototype.$xdStorage = storage;
 Vue.prototype.$xdRegExps = regExps;
 Vue.config.productionTip = false;
+
 Vue.prototype.$xdOptions = {
   // qiniu: [{
   //   accoutKey: 'bP3Ca5dtSJBNaWwMkihfhuE30CbAZnYrNzQm6eMN', //七牛AK（e56buy ）
@@ -20,9 +21,11 @@ Vue.prototype.$xdOptions = {
   // }]
 };
 
+console.log(components);
+
 // 遍历并注册全局组件
-components.map(component => {
-  Vue.component(component.name, component)
+Object.keys(components).map(key => {
+  Vue.component(components[key].name, components[key])
 });
 
 new Vue({
