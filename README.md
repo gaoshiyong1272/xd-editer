@@ -27,12 +27,12 @@ npm run dev
 
 ##### 引入方式
 
-```javascript
-// 全局引入方式
+```
+#EE 全局引入方式
 
 import editer from 'gxd-editer';
 
-// 七牛配置项
+# 七牛配置项
 Vue.use(editer,{
   qiniu: [{
     accoutKey: 'bP3Ca5dtSJBNaWwMkihfhuE11130CbAZnYrNzQm6eMN', //七牛AK
@@ -42,9 +42,22 @@ Vue.use(editer,{
   }]
 });
 
-// 或者在调插件的时候传入七牛相关配置
+# 或者在调插件的时候传入七牛相关配置
 import editer from 'gxd-editer';
 Vue.use(editer,{});
+
+# 局部引用
+import gxdEditer from 'gxd-editer';
+let {XdEditor, XdQiniuEditor} = gxdEditer;
+
+export default {
+    ...
+    components: {
+        XdEditor,
+        XdQiniuEditor
+    }
+    ...
+}
 
 ```
 
