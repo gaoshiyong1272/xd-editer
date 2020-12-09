@@ -28,7 +28,7 @@ npm run dev
 ##### 引入方式
 
 ```
-#EE 全局引入方式
+# 全局引入
 
 import editer from 'gxd-editer';
 
