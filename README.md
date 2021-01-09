@@ -32,7 +32,7 @@ npm run dev
 
 import editer from 'gxd-editer';
 
-# 七牛配置项
+# 七牛配置项(七牛账号自行注册，静态域名按照文档配置即可)
 Vue.use(editer,{
   qiniu: [{
     accoutKey: 'bP3Ca5dtSJBNaWwMkihfhuE11130CbAZnYrNzQm6eMN', //七牛AK
@@ -68,6 +68,7 @@ export default {
     <xd-qiniu-editor
       action="https://up-z1.qiniup.com"
       :height="400"
+      :name="file"
       :qiniu-options="qiniuOptions"
       :z-index="10000"
       v-model="qiniuContent"
@@ -81,6 +82,7 @@ export default {
   data(){
     return {
       qiniuContent: '<p>测试数据</p>',
+      file: 'file', //上传文件的文件key
       qiniuOptions: {
         accoutKey: 'bP3Ca5dtSJBNaWwMkihfhuE30CbA11ZnYrNzQm6eMN', //七牛AK
         serviceKey: 'pPNgWwRL3_Jlj7cPtpYbkhXn01EOZ22TtUhOs3NqZM', //七牛SK
@@ -101,10 +103,11 @@ export default {
 <template>
     <xd-editor
       style="width: 70%"
-      action="https://sandbox-c.jufubao.cn/api/admin/common/upload"
+      action="https://xxx.domain.com/upload"
       :params="params"
       :headers="{}"
       :height="150"
+      :name="file"
       :z-index="10000"
       :upload-type="['jpeg','jpg','png', 'gif', 'bmp']"
       :size="0.1"
@@ -123,7 +126,8 @@ export default {
         params :{
           params2:'params1',
           params2:'params2'
-        }
+        },
+        file: 'file' //上传文件的文件key
     }
   }
 }
